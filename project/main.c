@@ -13,8 +13,9 @@ int main(int argc, char *argv[]) {
 		roleMenu();
 		printf("Enter Your Choice: ");
 		scanf("%d", &chRole);
+		getchar();
 		if(chRole==1){
-//			login();
+			login();
 			do{
 				system("cls");
 				manageMenu();

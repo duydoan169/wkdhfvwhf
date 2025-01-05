@@ -5,7 +5,7 @@
 #include <ctype.h>
 
 void roleMenu(){
-	printf("        ***Management System Using C***\n\n");
+	printf("     ***Management System Using C***\n\n");
 	printf("\tCHOOSE YOUR ROLE\n");
 	printf("================================\n");
 	printf("[1] Admin\n");
@@ -20,27 +20,31 @@ void login(){
 	char password[9];
 	system("cls");
 	do{
-		
-		printf("        ***Management System Using C***\n\n");
 		printf("\t    LOGIN\n");
 		printf("\n================================\n");
-		while ((getchar()) != '\n');
 		printf("Email: ");
 		fgets(email, sizeof(email), stdin);
-		email[strcspn(email, "\n")] = '\0';
-		while ((getchar()) != '\n');
+		if(strcspn(email, "\n")==strlen(email)){
+			while ((getchar()) != '\n');
+		} else{
+			email[strcspn(email, "\n")] = '\0';
+		}
 		printf("Password: ");
 		fgets(password, sizeof(password), stdin);
-		password[strcspn(password, "\n")] = '\0';
+		if(strcspn(password, "\n")==strlen(password)){
+			while ((getchar()) != '\n');
+		} else{
+			password[strcspn(password, "\n")] = '\0';
+		}
 		system("cls");
 		if(strcmp(password,"password")!=0 || strcmp(email,"admin@gmail.com")!=0){
-			printf("\n*wrong Email Or Password! Please Try Again*\n");
+			printf("\n*wrong Email Or Password! Please Try Again*\n\n");
 		}
 	}while(strcmp(password,"password")!=0 || strcmp(email,"admin@gmail.com")!=0);
 }
 
 void manageMenu(){
-	printf("        ***Management System Using C***\n\n");
+	printf("    ***Management System Using C***\n\n");
 	printf("\t     MENU\n");
 	printf("================================\n");
 	printf("[1] Students Mangement\n");
@@ -49,6 +53,8 @@ void manageMenu(){
 	printf("[0] Back\n");
 	printf("================================\n");
 }
+
+//student
 
 void studentMenu(){
 	printf("***Student Management System Using C***\n\n");

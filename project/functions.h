@@ -3,6 +3,8 @@
 void roleMenu();
 void login();
 void manageMenu();
+
+//student
 void studentMenu();
 void inputStudent(Student student[], int *length);
 void printStudent(Student student[], int length);
