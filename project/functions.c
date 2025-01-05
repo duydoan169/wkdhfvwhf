@@ -157,7 +157,7 @@ void inputStudent(Student student[], int *length){
 			student[*length].phoneNumber[strcspn(student[*length].phoneNumber,"\n")]='\0';
 		}
 		for(int i=0; i<*length; i++){
-			if(strcmp(student[i].email,student[*length].phoneNumber)==0){
+			if(strcmp(student[i].phoneNumber,student[*length].phoneNumber)==0){
 				count++;
 			}
 		}
@@ -209,8 +209,8 @@ void editStudent(Student student[], int length){
 		printf("      STUDENT INFORMATION\n");
 		printf("================================\n");
 		printf("ID: %d\n", student[found].studentId);
-		printf("Classroom ID: %s\n", student[found].classroomId);
 		printf("Full Name: %s\n", student[found].name);
+		printf("Classroom ID: %s\n", student[found].classroomId);
 		printf("Email: %s\n", student[found].email);
 		printf("Phone Number: %s\n", student[found].phoneNumber);
 		printf("\n***UPDATE INFORMATION***\n\n");
@@ -304,7 +304,7 @@ void editStudent(Student student[], int length){
 				student[found].phoneNumber[strcspn(student[found].phoneNumber,"\n")]='\0';
 			}
 			for(int i=0; i<length; i++){
-				if(i!=found && strcmp(student[i].email,student[found].phoneNumber)==0){
+				if(i!=found && strcmp(student[i].phoneNumber,student[found].phoneNumber)==0){
 					count++;
 				}
 			}
@@ -356,8 +356,8 @@ void deleteStudent(Student student[], int *length){
 		printf("      STUDENT INFORMATION\n");
 		printf("================================\n");
 		printf("ID: %d\n", student[found].studentId);
-		printf("Classroom ID: %s\n", student[found].classroomId);
 		printf("Full Name: %s\n", student[found].name);
+		printf("Classroom ID: %s\n", student[found].classroomId);
 		printf("Email: %s\n", student[found].email);
 		printf("Phone Number: %s\n", student[found].phoneNumber);
 		do{
@@ -443,7 +443,7 @@ void saveStudentToFile(Student student[], int length, int a){
 	}
 	fwrite(student,sizeof(Student),length,ptr);
 	if(a==1){
-		printf("\n\n*Saved Successfully*\n");
+		printf("\n*Saved Successfully*\n");
 	}
 	fclose(ptr);
 }
@@ -456,7 +456,7 @@ void loadStudentFromFile(Student student[], int *length, int a){
 	}
 	*length=fread(student, sizeof(Student), 100, ptr);
 	if(a==1){
-		printf("\n\n*Loaded Successfully*\n");
+		printf("\n*Loaded Successfully*\n");
 	}
 	fclose(ptr);
 }
