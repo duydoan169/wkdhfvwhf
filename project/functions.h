@@ -10,6 +10,6 @@ void editStudent(Student student[], int length);
 void backAndExit();
 void deleteStudent(Student student[], int *length);
 void sortStudent(Student student[], int length);
-void saveStudentToFile(Student student[], int length);
-void loadStudentFromFile(Student student[], int *length);
+void saveStudentToFile(Student student[], int length, int a);
+void loadStudentFromFile(Student student[], int *length, int a);
 void searchStudent(Student student[], int length);

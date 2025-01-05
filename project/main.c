@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
 		printf("Enter Your Choice: ");
 		scanf("%d", &chRole);
 		if(chRole==1){
-			loadStudentFromFile(student, &length);
+			loadStudentFromFile(student, &length,1);
 //			login();
 			do{
 				system("cls");
@@ -32,7 +32,6 @@ int main(int argc, char *argv[]) {
 								case 1:
 									system("cls");
 									inputStudent(student, &length);
-									saveStudentToFile(student, length);
 									backAndExit();
 									break;
 								case 2:
@@ -60,9 +59,7 @@ int main(int argc, char *argv[]) {
 									backAndExit();
 									break;
 								case 6:
-									saveStudentToFile(student, length);
 									sortStudent(student, length);
-									loadStudentFromFile(student, &length);
 									backAndExit();
 									break;
 							}

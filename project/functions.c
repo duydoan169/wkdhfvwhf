@@ -2,6 +2,8 @@
 #include "functions.h"
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
+
 void roleMenu(){
 	printf("***Student Management System Using C***\n\n");
 	printf("\tCHOOSE YOUR ROLE\n");
@@ -22,11 +24,11 @@ void login(){
 		printf("***Student Management System Using C***\n\n");
 		printf("\t    LOGIN\n");
 		printf("\n================================\n");
-		fflush(stdin);
+		while ((getchar()) != '\n');
 		printf("Email: ");
 		fgets(email, sizeof(email), stdin);
 		email[strcspn(email, "\n")] = '\0';
-		fflush(stdin);
+		while ((getchar()) != '\n');
 		printf("Password: ");
 		fgets(password, sizeof(password), stdin);
 		password[strcspn(password, "\n")] = '\0';
@@ -63,104 +65,129 @@ void studentMenu(){
 }
 
 void inputStudent(Student student[], int *length){
-	int count;
+	int count, check, ch;
 	printf("\t***Add A New Student***\n\n");
 	getchar();
 	do{
 		count=0;
 		printf("Enter Student's ID: ");
-		scanf("%d", &student[*length].studentId);
-		for(int i=0; i<*length; i++){
-			if(student[i].studentId==student[*length].studentId){
-				count++;
+		if(scanf("%d", &student[*length].studentId)==1){
+			for(int i=0; i<*length; i++){
+				if(student[i].studentId==student[*length].studentId){
+					count++;
+				}
 			}
+			if(count!=0 || student[*length].studentId<1 || student[*length].studentId>99999){
+				printf("\n*Student ID Must Be Positive And Not Already Exist*\n\n");
+			}
+		} else{
+			printf("\n*Student ID Must Be A Number*\n\n");
+			while ((getchar()) != '\n');
 		}
-		if(count!=0 || student[*length].studentId<1){
-			printf("\n*Error, Please Try Again*\n\n");
-		}
-	}while(count!=0 || student[*length].studentId<1);
+	
+	}while(count!=0 || student[*length].studentId<1 || student[*length].studentId>99999);
 	getchar();
 	
 	do{
+		check=0;
 		printf("Enter Student's Full Name: ");
-		fgets(student[*length].name,30,stdin);
-		student[*length].name[strcspn(student[*length].name,"\n")]='\0';
-		if(student[*length].name[0]=='\0'){
-			printf("\n*Error, Please Try Again*\n\n");
+		fgets(student[*length].name,25,stdin);
+		if(strcspn(student[*length].name,"\n")==strlen(student[*length].name)){
+			while ((getchar()) != '\n');
+		} else{
+			student[*length].name[strcspn(student[*length].name,"\n")]='\0';
 		}
-	}while(student[*length].name[0]=='\0');
+		for(int i=0; i<strlen(student[*length].name); i++){
+			if(isalpha(student[*length].name[i])==0 && student[*length].name[i] != ' '){
+				check++;
+			}
+		}
+		if(student[*length].name[0]=='\0' || check!=0){
+			printf("\n*Name Must Not Be Empty Or Contains Special Characters*\n\n");
+		}
+	}while(student[*length].name[0]=='\0' || check!=0);
 	
 	do{
+		check=0;
 		printf("Enter Student's Classroom ID: ");
 		fgets(student[*length].classroomId,5,stdin);
 		student[*length].classroomId[strcspn(student[*length].classroomId,"\n")]='\0';
-		if(student[*length].classroomId[0]=='\0'){
-			printf("\n*Error, Please Try Again*\n\n");
+		for(int i=0; i<strlen(student[*length].classroomId); i++){
+			if(isdigit(student[*length].classroomId[i])==0){
+				check++;
+			}
 		}
-	}while(student[*length].classroomId[0]=='\0');
+		if(student[*length].classroomId[0]=='\0' || check!=0){
+			printf("\n*Classroom ID Must Not Be Empty Or Be A Negative Number*\n\n");
+		}
+	}while(student[*length].classroomId[0]=='\0' || check!=0);
 	
 	do{
 		count=0;
+		check=0;
 		printf("Enter Student's Email: ");
-		fgets(student[*length].email,35,stdin);
-		student[*length].email[strcspn(student[*length].email,"\n")]='\0';
+		fgets(student[*length].email,30,stdin);
+		if(strcspn(student[*length].email, "\n")==strlen(student[*length].email)){
+			while((getchar())!='\n');
+		} else{
+			student[*length].email[strcspn(student[*length].email,"\n")]='\0';
+		}
 		for(int i=0; i<*length; i++){
 			if(strcmp(student[i].email,student[*length].email)==0){
 				count++;
 			}
 		}
-		if(count!=0 || student[*length].email[0]=='\0'){
-			printf("\n*Error, Please Try Again*\n\n");
-		}
-	}while(count!=0 || student[*length].email[0]=='\0');
-	
-	do{
-		count=0;
-		printf("Enter Student's Phone Number: ");
-		fgets(student[*length].phoneNumber,15,stdin);
-		student[*length].phoneNumber[strcspn(student[*length].phoneNumber,"\n")]='\0';
-		for(int i=0; i<*length; i++){
-			if(strcmp(student[i].email,student[*length].email)==0){
-				count++;
+		for(int i=0; i<strlen(student[*length].email); i++){
+			if(isalpha(student[*length].email[i])==0 && student[*length].email[i]!='@' && student[*length].email[i]!='.' && student[*length].email[i]!='-' && student[*length].email[i]!='_' && isdigit(student[*length].email[i])==0){
+				check++;
 			}
 		}
-		if(count!=0 || student[*length].email[0]=='\0'){
-			printf("\n*Error, Please Try Again*\n\n");
+		if(count!=0 || student[*length].email[0]=='\0' || check!=0){
+			printf("\n*Email Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
 		}
-	}while(count!=0 || student[*length].email[0]=='\0');
-	
+	}while(count!=0 || student[*length].email[0]=='\0' || check!=0);
 	do{
 		count=0;
 		printf("Enter Student's Phone Number: ");
 		fgets(student[*length].phoneNumber,15,stdin);
-		student[*length].phoneNumber[strcspn(student[*length].phoneNumber,"\n")]='\0';
+		if(strcspn(student[*length].phoneNumber, "\n")==strlen(student[*length].phoneNumber)){
+			while((getchar())!='\n');
+		} else{
+			student[*length].phoneNumber[strcspn(student[*length].phoneNumber,"\n")]='\0';
+		}
 		for(int i=0; i<*length; i++){
 			if(strcmp(student[i].email,student[*length].phoneNumber)==0){
 				count++;
 			}
 		}
-		if(count!=0 || student[*length].phoneNumber[0]=='\0'){
-			printf("\n*Error, Please Try Again*\n\n");
+		for(int i=0; i<strlen(student[*length].phoneNumber); i++){
+			if(isdigit(student[*length].phoneNumber[i])==0){
+				check++;
+			}
 		}
-	}while(count!=0 || student[*length].phoneNumber[0]=='\0');
+		if(count!=0 || student[*length].phoneNumber[0]=='\0' || check!=0){
+			printf("\n*Email Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
+		}
+	}while(count!=0 || student[*length].phoneNumber[0]=='\0' || check!=0);
 
 	printf("\n*Student Added Successfully*\n"); 
 	(*length)++;
+	saveStudentToFile(student, length,1);
 }
 
 void printStudent(Student student[], int length){
 	printf("\t**ALL STUDENTS**\n\n");
-	printf("|=======|========================|==============|============================|==================|\n");
-	printf("|  ID   |         Name           | classroomId  |           Email            |     PhoneNumber  |\n");
-	printf("|=======|========================|==============|============================|==================|\n");
+	printf("|=======|===========================|==============|================================|==================|\n");
+	printf("|  ID   |           Name            | classroomId  |             Email              |    PhoneNumber   |\n");
+	printf("|=======|===========================|==============|================================|==================|\n");
 	for(int i=0; i<length; i++){
-		printf("| %-5d | %-22s | %-12s | %-26s | %-16s |\n", 
+		printf("| %-5d | %-25s | %-12s | %-30s | %-16s |\n", 
 		student[i].studentId,
 		student[i].name,
 		student[i].classroomId,
 		student[i].email,
 		student[i].phoneNumber);
-		printf("|=======|========================|==============|============================|==================|\n");
+		printf("|=======|===========================|==============|================================|==================|\n");
 	}
 }
 
@@ -203,7 +230,7 @@ void editStudent(Student student[], int length){
 		getchar();
 		do{
 			printf("Enter Student's Full Name: ");
-			fgets(student[found].name,30,stdin);
+			fgets(student[found].name,25,stdin);
 			student[found].name[strcspn(student[found].name,"\n")]='\0';
 			if(student[found].name[0]=='\0'){
 				printf("\n*Error, Please Try Again*\n\n");
@@ -222,7 +249,7 @@ void editStudent(Student student[], int length){
 		do{
 			count=0;
 			printf("Enter Student's Email: ");
-			fgets(student[found].email,35,stdin);
+			fgets(student[found].email,30,stdin);
 			student[found].email[strcspn(student[found].email,"\n")]='\0';
 			for(int i=0; i<length; i++){
 				if(i!= found && strcmp(student[i].email,student[found].email)==0){
@@ -248,7 +275,7 @@ void editStudent(Student student[], int length){
 			}
 		}while(count!=0 || student[found].phoneNumber[0]=='\0');
 		printf("\n*Student's Information Changed Successfully*\n"); 
-		saveStudentToFile(student, length);
+		saveStudentToFile(student, length, 1);
 	}
 }
 
@@ -307,7 +334,7 @@ void deleteStudent(Student student[], int *length){
 			}
 			(*length)--;
 			printf("\n*Delete Successful*\n");
-			saveStudentToFile(student, *length);
+			saveStudentToFile(student, *length, 1);
 		}
 	}
 }
@@ -318,6 +345,7 @@ void sortStudent(Student student[], int length){
 		system("cls");
 		printf("*Not Enough Students To Sort*\n");
 	} else{
+		saveStudentToFile(student, length,0);
 		do{
 			printf("\nSort By Ascending(0) or Descending(1) order: ");
 			scanf("%d", &sortOrder);
@@ -347,41 +375,46 @@ void sortStudent(Student student[], int length){
 	}
     if(length>=2){
     	printf("\n\t**SORTED STUDENTS**\n\n");
-		printf("|=======|========================|==============|============================|==================|\n");
-		printf("|  ID   |         Name           | classroomId  |           Email            |     PhoneNumber  |\n");
-		printf("|=======|========================|==============|============================|==================|\n");
+		printf("|=======|===========================|==============|================================|==================|\n");
+		printf("|  ID   |           Name            | classroomId  |             Email              |    PhoneNumber   |\n");
+		printf("|=======|===========================|==============|================================|==================|\n");
 		for(int i=0; i<length; i++){
 			
-			printf("| %-5d | %-22s | %-12s | %-26s | %-16s |\n", 
+			printf("| %-5d | %-25s | %-12s | %-30s | %-16s |\n", 
 			student[i].studentId,
 			student[i].name,
 			student[i].classroomId,
 			student[i].email,
 			student[i].phoneNumber);
-			printf("|=======|========================|==============|============================|==================|\n");
+			printf("|=======|===========================|==============|================================|==================|\n");
 		}
 	}
+	loadStudentFromFile(student, &length,0);
 }
 
-void saveStudentToFile(Student student[], int length){
+void saveStudentToFile(Student student[], int length, int a){
 	FILE *ptr=fopen("studentData.dat", "wb");
 	if(ptr==NULL){
 		printf("\n\n*Can't Open File*\n");
 		fclose(ptr);
 	}
 	fwrite(student,sizeof(Student),length,ptr);
-	printf("\n\n*Saved Successfully*\n");
+	if(a==1){
+		printf("\n\n*Saved Successfully*\n");
+	}
 	fclose(ptr);
 }
 
-void loadStudentFromFile(Student student[], int *length){
+void loadStudentFromFile(Student student[], int *length, int a){
 	FILE *ptr=fopen("studentData.dat", "rb");
 	if(ptr==NULL){
 		printf("Can't Open File");
 		fclose(ptr);
 	}
 	*length=fread(student, sizeof(Student), 100, ptr);
-	printf("\n\n*Loaded Successfully*\n");
+	if(a==1){
+		printf("\n\n*Loaded Successfully*\n");
+	}
 	fclose(ptr);
 }
 
@@ -395,7 +428,7 @@ void searchStudent(Student student[], int length){
 		fgets(name, sizeof(name), stdin);
 		name[strcspn(name,"\n")]='\0';
 		if(strlen(name)<=1){
-			printf("\n*Error, Please Try Again*\n");
+			printf("\n*Minimum 2 Characters Required, Try Again*\n");
 		}
 	}while(strlen(name)<=1);
 	system("cls");
@@ -404,18 +437,18 @@ void searchStudent(Student student[], int length){
 	for(int i=0; i<length; i++){
 		if((strstr(student[i].name, name))!= NULL){
 			if(firstTime==0){
-				printf("|=======|========================|==============|============================|==================|\n");
-				printf("|  ID   |         Name           | classroomId  |           Email            |     PhoneNumber  |\n");
-				printf("|=======|========================|==============|============================|==================|\n");
+				printf("|=======|===========================|==============|================================|==================|\n");
+				printf("|  ID   |           Name            | classroomId  |             Email              |    PhoneNumber   |\n");
+				printf("|=======|===========================|==============|================================|==================|\n");
 				firstTime++;
 			}
-			printf("| %-5d | %-22s | %-12s | %-26s | %-16s |\n", 
+			printf("| %-5d | %-25s | %-12s | %-30s | %-16s |\n", 
 			student[i].studentId,
 			student[i].name,
 			student[i].classroomId,
 			student[i].email,
 			student[i].phoneNumber);
-			printf("|=======|========================|==============|============================|==================|\n");
+			printf("|=======|===========================|==============|================================|==================|\n");
 			count++;
 		}
 	}
