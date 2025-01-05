@@ -84,7 +84,6 @@ void inputStudent(Student student[], int *length){
 			printf("\n*Student ID Must Be A Number*\n\n");
 			while ((getchar()) != '\n');
 		}
-	
 	}while(count!=0 || student[*length].studentId<1 || student[*length].studentId>99999);
 	getchar();
 	
@@ -146,8 +145,10 @@ void inputStudent(Student student[], int *length){
 			printf("\n*Email Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
 		}
 	}while(count!=0 || student[*length].email[0]=='\0' || check!=0);
+	
 	do{
 		count=0;
+		check=0;
 		printf("Enter Student's Phone Number: ");
 		fgets(student[*length].phoneNumber,15,stdin);
 		if(strcspn(student[*length].phoneNumber, "\n")==strlen(student[*length].phoneNumber)){
@@ -172,7 +173,7 @@ void inputStudent(Student student[], int *length){
 
 	printf("\n*Student Added Successfully*\n"); 
 	(*length)++;
-	saveStudentToFile(student, length,1);
+	saveStudentToFile(student, *length,1);
 }
 
 void printStudent(Student student[], int length){
@@ -192,7 +193,7 @@ void printStudent(Student student[], int length){
 }
 
 void editStudent(Student student[], int length){
-	int find, found, count=0;
+	int find, found, count=0, check=0;
 	printf("***EDIT STUDENT INFORMATION***\n\n");
 	printf("Enter Student ID: ");
 	scanf("%d", &find);
@@ -217,63 +218,105 @@ void editStudent(Student student[], int length){
 		do{
 			count=0;
 			printf("Enter Student's ID: ");
-			scanf("%d", &student[found].studentId);
-			for(int i=0; i<length; i++){
-				if((i != found && student[i].studentId == student[found].studentId)){
-					count++;
+			if(scanf("%d", &student[found].studentId)==1){
+				for(int i=0; i<length; i++){
+					if(i!=found && student[i].studentId==student[found].studentId){
+						count++;
+					}
 				}
+				if(count!=0 || student[found].studentId<1 || student[found].studentId>99999){
+					printf("\n*Student ID Must Be Positive And Not Already Exist*\n\n");
+				}
+			} else{
+				printf("\n*Student ID Must Be A Number*\n\n");
+				while ((getchar()) != '\n');
 			}
-			if(count>0 || student[found].studentId<1){
-				printf("\n*Error, Please Try Again*\n\n");
-			}
-		}while(count>0 || student[found].studentId<1);
+		}while(count!=0 || student[found].studentId<1 || student[found].studentId>99999);
 		getchar();
-		do{
-			printf("Enter Student's Full Name: ");
-			fgets(student[found].name,25,stdin);
-			student[found].name[strcspn(student[found].name,"\n")]='\0';
-			if(student[found].name[0]=='\0'){
-				printf("\n*Error, Please Try Again*\n\n");
-			}
-		}while(student[found].name[0]=='\0');
 		
 		do{
+			check=0;
+			printf("Enter Student's Full Name: ");
+			fgets(student[found].name,25,stdin);
+			if(strcspn(student[found].name,"\n")==strlen(student[found].name)){
+				while ((getchar()) != '\n');
+			} else{
+				student[found].name[strcspn(student[found].name,"\n")]='\0';
+			}
+			for(int i=0; i<strlen(student[found].name); i++){
+				if(isalpha(student[found].name[i])==0 && student[found].name[i] != ' '){
+					check++;
+				}
+			}
+			if(student[found].name[0]=='\0' || check!=0){
+				printf("\n*Name Must Not Be Empty Or Contains Special Characters*\n\n");
+			}
+		}while(student[found].name[0]=='\0' || check!=0);
+		
+		do{
+			check=0;
 			printf("Enter Student's Classroom ID: ");
 			fgets(student[found].classroomId,5,stdin);
 			student[found].classroomId[strcspn(student[found].classroomId,"\n")]='\0';
-			if(student[found].classroomId[0]=='\0'){
-				printf("\n*Error, Please Try Again*\n\n");
+			for(int i=0; i<strlen(student[found].classroomId); i++){
+				if(isdigit(student[found].classroomId[i])==0){
+					check++;
+				}
 			}
-		}while(student[found].classroomId[0]=='\0');
+			if(student[found].classroomId[0]=='\0' || check!=0){
+				printf("\n*Classroom ID Must Not Be Empty Or Be A Negative Number*\n\n");
+			}
+		}while(student[found].classroomId[0]=='\0' || check!=0);
 		
 		do{
 			count=0;
+			check=0;
 			printf("Enter Student's Email: ");
 			fgets(student[found].email,30,stdin);
-			student[found].email[strcspn(student[found].email,"\n")]='\0';
+			if(strcspn(student[found].email, "\n")==strlen(student[found].email)){
+				while((getchar())!='\n');
+			} else{
+				student[found].email[strcspn(student[found].email,"\n")]='\0';
+			}
 			for(int i=0; i<length; i++){
-				if(i!= found && strcmp(student[i].email,student[found].email)==0){
+				if(i!=found && strcmp(student[i].email,student[found].email)==0){
 					count++;
 				}
 			}
-			if(count!=0 || student[found].email[0]=='\0'){
-				printf("\n*Error, Please Try Again*\n\n");
+			for(int i=0; i<strlen(student[found].email); i++){
+				if(isalpha(student[found].email[i])==0 && student[found].email[i]!='@' && student[found].email[i]!='.' && student[found].email[i]!='-' && student[found].email[i]!='_' && isdigit(student[found].email[i])==0){
+					check++;
+				}
 			}
-		}while(count!=0 || student[found].email[0]=='\0');
+			if(count!=0 || student[found].email[0]=='\0' || check!=0){
+				printf("\n*Email Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
+			}
+		}while(count!=0 || student[found].email[0]=='\0' || check!=0);
+		
 		do{
 			count=0;
+			check=0;
 			printf("Enter Student's Phone Number: ");
 			fgets(student[found].phoneNumber,15,stdin);
-			student[found].phoneNumber[strcspn(student[found].phoneNumber,"\n")]='\0';
+			if(strcspn(student[found].phoneNumber, "\n")==strlen(student[found].phoneNumber)){
+				while((getchar())!='\n');
+			} else{
+				student[found].phoneNumber[strcspn(student[found].phoneNumber,"\n")]='\0';
+			}
 			for(int i=0; i<length; i++){
 				if(i!=found && strcmp(student[i].email,student[found].phoneNumber)==0){
 					count++;
 				}
 			}
-			if(count!=0 || student[found].phoneNumber[0]=='\0'){
-				printf("\n*Error, Please Try Again*\n\n");
+			for(int i=0; i<strlen(student[found].phoneNumber); i++){
+				if(isdigit(student[found].phoneNumber[i])==0){
+					check++;
+				}
 			}
-		}while(count!=0 || student[found].phoneNumber[0]=='\0');
+			if(count!=0 || student[found].phoneNumber[0]=='\0' || check!=0){
+				printf("\n*Email Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
+			}
+		}while(count!=0 || student[found].phoneNumber[0]=='\0' || check!=0);
 		printf("\n*Student's Information Changed Successfully*\n"); 
 		saveStudentToFile(student, length, 1);
 	}
