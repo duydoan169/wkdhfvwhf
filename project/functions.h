@@ -23,3 +23,14 @@ void deleteTeacher(Teacher teacher[], int *lengthTeacher);
 void saveTeacherToFile(Teacher teacher[], int lengthTeacher, int a);
 void loadTeacherFromFile(Teacher teacher[], int *lengthTeacher, int a);
 void searchTeacher(Teacher teacher[], int lengthTeacher);
+
+//classroom
+void classroomMenu();
+void inputClassroom(Classroom classroom[], int *lengthClassroom);
+void printClassroom(Classroom classroom[], int lengthClassroom);
+void editClassroom(Classroom classroom[], int lengthClassroom);
+void deleteClassroom(Classroom classroom[], int *lengthClassroom);
+void sortClassroom(Classroom classroom[], int lengthClassroom);
+void saveClassroomToFile(Classroom classroom[], int lengthClassroom, int a);
+void loadClassroomFromFile(Classroom classroom[], int *lengthClassroom, int a);
+void searchClassroom(Classroom student[], int lengthClassroom);

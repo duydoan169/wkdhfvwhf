@@ -15,3 +15,9 @@ typedef struct{
 	char email[30];
 	char phoneNumber[15];
 }Teacher;
+
+typedef struct{
+	int classroomId;
+	char teacherId[10];
+	char name[25];
+}Classroom;

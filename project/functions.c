@@ -5,7 +5,7 @@
 #include <ctype.h>
 
 void roleMenu(){
-	printf("***Student Management System Using C***\n\n");
+	printf("        ***Management System Using C***\n\n");
 	printf("\tCHOOSE YOUR ROLE\n");
 	printf("================================\n");
 	printf("[1] Admin\n");
@@ -21,7 +21,7 @@ void login(){
 	system("cls");
 	do{
 		
-		printf("***Student Management System Using C***\n\n");
+		printf("        ***Management System Using C***\n\n");
 		printf("\t    LOGIN\n");
 		printf("\n================================\n");
 		while ((getchar()) != '\n');
@@ -40,7 +40,7 @@ void login(){
 }
 
 void manageMenu(){
-	printf("***Student Management System Using C***\n\n");
+	printf("        ***Management System Using C***\n\n");
 	printf("\t     MENU\n");
 	printf("================================\n");
 	printf("[1] Students Mangement\n");
@@ -110,7 +110,11 @@ void inputStudent(Student student[], int *length){
 		check=0;
 		printf("Enter Student's Classroom ID: ");
 		fgets(student[*length].classroomId,5,stdin);
-		student[*length].classroomId[strcspn(student[*length].classroomId,"\n")]='\0';
+		if(strcspn(student[*length].classroomId, "\n")==strlen(student[*length].classroomId)){
+			while((getchar())!='\n');
+		} else{
+			student[*length].classroomId[strcspn(student[*length].classroomId,"\n")]='\0';
+		}
 		for(int i=0; i<strlen(student[*length].classroomId); i++){
 			if(isdigit(student[*length].classroomId[i])==0){
 				check++;
@@ -257,7 +261,11 @@ void editStudent(Student student[], int length){
 			check=0;
 			printf("Enter Student's Classroom ID: ");
 			fgets(student[found].classroomId,5,stdin);
-			student[found].classroomId[strcspn(student[found].classroomId,"\n")]='\0';
+			if(strcspn(student[found].classroomId, "\n")==strlen(student[found].classroomId)){
+				while((getchar())!='\n');
+			} else{
+				student[found].classroomId[strcspn(student[found].classroomId,"\n")]='\0';
+			}
 			for(int i=0; i<strlen(student[found].classroomId); i++){
 				if(isdigit(student[found].classroomId[i])==0){
 					check++;
@@ -333,7 +341,8 @@ void backAndExit(){
 		}
 	}while(backExit!=0 && backExit!=10);
 	if(backExit==10){
-		printf("\n*Exited The Program*");
+		printf("\n======Thank You======\n");
+		printf("==== See You Soon ====");
 		exit(0);
 	}
 }
@@ -559,7 +568,11 @@ void inputTeacher(Teacher teacher[], int *lengthTeacher){
 		check=0;
 		printf("Enter Teacher's Classroom ID: ");
 		fgets(teacher[*lengthTeacher].classroomId,5,stdin);
-		teacher[*lengthTeacher].classroomId[strcspn(teacher[*lengthTeacher].classroomId,"\n")]='\0';
+		if(strcspn(teacher[*lengthTeacher].classroomId, "\n")==strlen(teacher[*lengthTeacher].classroomId)){
+			while((getchar())!='\n');
+		} else{
+			teacher[*lengthTeacher].classroomId[strcspn(teacher[*lengthTeacher].classroomId,"\n")]='\0';
+		}
 		for(int i=0; i<strlen(teacher[*lengthTeacher].classroomId); i++){
 			if(isdigit(teacher[*lengthTeacher].classroomId[i])==0){
 				check++;
@@ -706,7 +719,11 @@ void editTeacher(Teacher teacher[], int lengthTeacher){
 			check=0;
 			printf("Enter Teacher's Classroom ID: ");
 			fgets(teacher[found].classroomId,5,stdin);
-			teacher[found].classroomId[strcspn(teacher[found].classroomId,"\n")]='\0';
+			if(strcspn(teacher[found].classroomId, "\n")==strlen(teacher[found].classroomId)){
+				while((getchar())!='\n');
+			} else{
+				teacher[found].classroomId[strcspn(teacher[found].classroomId,"\n")]='\0';
+			}
 			for(int i=0; i<strlen(teacher[found].classroomId); i++){
 				if(isdigit(teacher[found].classroomId[i])==0){
 					check++;
@@ -828,15 +845,15 @@ void saveTeacherToFile(Teacher teacher[], int lengthTeacher, int a){
 }
 
 void loadTeacherFromFile(Teacher teacher[], int *lengthTeacher, int a){
-	FILE *ptr=fopen("teacherData.dat", "rb");
-	if(ptr==NULL){
+	FILE *teacherPtr=fopen("teacherData.dat", "rb");
+	if(teacherPtr==NULL){
 		printf("Can't Open File");
 	}
-	*lengthTeacher=fread(teacher, sizeof(Teacher), 100, ptr);
+	*lengthTeacher=fread(teacher, sizeof(Teacher), 100, teacherPtr);
 	if(a==1){
 		printf("\n*Loaded Successfully*\n");
 	}
-	fclose(ptr);
+	fclose(teacherPtr);
 }
 
 void searchTeacher(Teacher teacher[], int lengthTeacher){
@@ -878,3 +895,330 @@ void searchTeacher(Teacher teacher[], int lengthTeacher){
 	}
 }
 
+//classroom
+
+void classroomMenu(){
+	printf("***Classroom Management System Using C***\n\n");
+	printf("\tCLASSROOM MENU\n");
+	printf("================================\n");
+	printf("[1] Add A New Classroom\n");
+	printf("[2] Show All Classrooms\n");
+	printf("[3] Search A Classroom\n");
+	printf("[4] Edit A Classroom\n");
+	printf("[5] Delete A Classroom\n");
+	printf("[6] Sort Classrooms By Name\n");
+	printf("[0] Back\n");
+	printf("================================\n");
+}
+
+void inputClassroom(Classroom classroom[], int *lengthClassroom){
+	int count, check, ch;
+	printf("\t***Add A New Classroom***\n\n");
+	getchar();
+	do{
+		count=0;
+		printf("Enter Classroom's ID: ");
+		if(scanf("%d", &classroom[*lengthClassroom].classroomId)==1){
+			for(int i=0; i<*lengthClassroom; i++){
+				if(classroom[i].classroomId==classroom[*lengthClassroom].classroomId){
+					count++;
+				}
+			}
+			if(count!=0 || classroom[*lengthClassroom].classroomId<1 || classroom[*lengthClassroom].classroomId>99999){
+				printf("\n*Classroom ID Must Be Positive And Not Already Exist*\n\n");
+			}
+		} else{
+			printf("\n*Classroom ID Must Be A Number*\n\n");
+			while ((getchar()) != '\n');
+		}
+	}while(count!=0 || classroom[*lengthClassroom].classroomId<1 || classroom[*lengthClassroom].classroomId>99999);
+	getchar();
+	
+	do{
+		check=0;
+		printf("Enter Classroom's Name: ");
+		fgets(classroom[*lengthClassroom].name,25,stdin);
+		if(strcspn(classroom[*lengthClassroom].name,"\n")==strlen(classroom[*lengthClassroom].name)){
+			while ((getchar()) != '\n');
+		} else{
+			classroom[*lengthClassroom].name[strcspn(classroom[*lengthClassroom].name,"\n")]='\0';
+		}
+		for(int i=0; i<strlen(classroom[*lengthClassroom].name); i++){
+			if(isalpha(classroom[*lengthClassroom].name[i])==0 && isdigit(classroom[*lengthClassroom].name[i])==0 && classroom[*lengthClassroom].name[i] != ' ' && classroom[*lengthClassroom].name[i] != '-' && classroom[*lengthClassroom].name[i] != '_'){
+				check++;
+			}
+		}
+		if(classroom[*lengthClassroom].name[0]=='\0' || check!=0){
+			printf("\n*Name Must Not Be Empty Or Contains Special Characters*\n\n");
+		}
+	}while(classroom[*lengthClassroom].name[0]=='\0' || check!=0);
+	
+	do{
+		check=0;
+		printf("Enter Classroom's Teacher ID: ");
+		fgets(classroom[*lengthClassroom].teacherId,5,stdin);
+		if(strcspn(classroom[*lengthClassroom].teacherId,"\n")==strlen(classroom[*lengthClassroom].teacherId)){
+			while ((getchar()) != '\n');
+		} else{
+			classroom[*lengthClassroom].teacherId[strcspn(classroom[*lengthClassroom].teacherId,"\n")]='\0';
+		}
+		for(int i=0; i<strlen(classroom[*lengthClassroom].teacherId); i++){
+			if(isdigit(classroom[*lengthClassroom].teacherId[i])==0){
+				check++;
+			}
+		}
+		if(classroom[*lengthClassroom].teacherId[0]=='\0' || check!=0){
+			printf("\n*Teacher ID Must Not Be Empty Or Be A Negative Number*\n\n");
+		}
+	}while(classroom[*lengthClassroom].teacherId[0]=='\0' || check!=0);
+
+	printf("\n*Classroom Added Successfully*\n"); 
+	(*lengthClassroom)++;
+	saveClassroomToFile(classroom, *lengthClassroom,1);
+}
+
+void printClassroom(Classroom classroom[], int lengthClassroom){
+	printf("\t**ALL CLASSROOMS**\n\n");
+	printf("|=======|===========================|==============|\n");
+	printf("|  ID   |           Name            |  teacherId   |\n");
+	printf("|=======|===========================|==============|\n");
+	for(int i=0; i<lengthClassroom; i++){
+		printf("| %-5d | %-25s | %-12s |\n", 
+		classroom[i].classroomId,
+		classroom[i].name,
+		classroom[i].teacherId);
+		printf("|=======|===========================|==============|\n");
+	}
+}
+
+void editClassroom(Classroom classroom[], int lengthClassroom){
+	int find, found, count=0, check=0;
+	printf("***EDIT CLASSROOM INFORMATION***\n\n");
+	printf("Enter Classroom ID: ");
+	scanf("%d", &find);
+	found=-1;
+	for(int i=0;i<lengthClassroom; i++){
+		if(classroom[i].classroomId==find){
+			found=i;
+		}
+	}
+	if(found==-1){
+		printf("\n*Can't Find Classroom With This ID*\n");
+	} else{
+		printf("    CLASSROOM INFORMATION\n");
+		printf("================================\n");
+		printf("Classroom ID: %d\n", classroom[found].classroomId);
+		printf("Classroom Name: %s\n", classroom[found].name);
+		printf("Teacher ID: %s\n", classroom[found].teacherId);
+		printf("\n***UPDATE INFORMATION***\n\n");
+		getchar();
+		do{
+			count=0;
+			printf("Enter Classroom's ID: ");
+			if(scanf("%d", &classroom[found].classroomId)==1){
+				for(int i=0; i<lengthClassroom; i++){
+					if(i!=found && classroom[i].classroomId==classroom[found].classroomId){
+						count++;
+					}
+				}
+				if(count!=0 || classroom[found].classroomId<1 || classroom[found].classroomId>99999){
+					printf("\n*Classroom ID Must Be Positive And Not Already Exist*\n\n");
+				}
+			} else{
+				printf("\n*Classroom ID Must Be A Number*\n\n");
+				while ((getchar()) != '\n');
+			}
+		}while(count!=0 || classroom[found].classroomId<1 || classroom[found].classroomId>99999);
+		getchar();
+		
+		do{
+			check=0;
+			printf("Enter Classroom's Name: ");
+			fgets(classroom[found].name,25,stdin);
+			if(strcspn(classroom[found].name,"\n")==strlen(classroom[found].name)){
+				while ((getchar()) != '\n');
+			} else{
+				classroom[found].name[strcspn(classroom[found].name,"\n")]='\0';
+			}
+			for(int i=0; i<strlen(classroom[found].name); i++){
+				if(isalpha(classroom[lengthClassroom].name[i])==0 && isdigit(classroom[lengthClassroom].name[i])==0 && classroom[lengthClassroom].name[i] != ' ' && classroom[lengthClassroom].name[i] != '-' && classroom[lengthClassroom].name[i] != '_'){
+					check++;
+				}
+			}
+			if(classroom[found].name[0]=='\0' || check!=0){
+				printf("\n*Name Must Not Be Empty Or Contains Special Characters*\n\n");
+			}
+		}while(classroom[found].name[0]=='\0' || check!=0);
+		
+		do{
+			check=0;
+			printf("Enter Classroom's Teacher ID: ");
+			fgets(classroom[found].teacherId,5,stdin);
+			classroom[found].teacherId[strcspn(classroom[found].teacherId,"\n")]='\0';
+			for(int i=0; i<strlen(classroom[found].teacherId); i++){
+				if(isdigit(classroom[found].teacherId[i])==0){
+					check++;
+				}
+			}
+			if(classroom[found].teacherId[0]=='\0' || check!=0){
+				printf("\n*Teacher ID Must Not Be Empty Or Be A Negative Number*\n\n");
+			}
+		}while(classroom[found].teacherId[0]=='\0' || check!=0);
+		printf("\n*Classroom's Information Changed Successfully*\n"); 
+		saveClassroomToFile(classroom, lengthClassroom, 1);
+	}
+}
+
+void deleteClassroom(Classroom classroom[], int *lengthClassroom){
+	int find, found;
+	char yesNo;
+	printf("     ***DELETE CLASSROOM***\n\n");
+	printf("Enter Classroom ID: ");
+	scanf("%d", &find);
+	found=-1;
+	for(int i=0;i<*lengthClassroom; i++){
+		if(classroom[i].classroomId==find){
+			found=i;
+		}
+	}
+	if(found==-1){
+		printf("\n*Can't Find Classroom With This ID*\n");
+	} else{
+		printf("    CLASSROOM INFORMATION\n");
+		printf("================================\n");
+		printf("Classroom ID: %d\n", classroom[found].classroomId);
+		printf("Classroom Name: %s\n", classroom[found].name);
+		printf("Teacher ID: %s\n", classroom[found].teacherId);
+		do{
+			getchar();
+			printf("\n\nAre You Sure You Want To Delete This Classroom? (Y/N): ");
+			scanf("%c", &yesNo);
+			if(yesNo!='Y' && yesNo!='N'){
+				printf("\n\n*Error, Please Try Again*\n");
+			}	
+		}while(yesNo!='Y' && yesNo!='N');
+		if(yesNo=='N'){
+			printf("\n*Delete Cancelled*\n");
+		} else{
+			for(int i=found; i<*lengthClassroom; i++){
+				classroom[i]=classroom[i+1];
+				
+			}
+			(*lengthClassroom)--;
+			printf("\n*Delete Successful*\n");
+			saveClassroomToFile(classroom, *lengthClassroom, 1);
+		}
+	}
+}
+
+void sortClassroom(Classroom classroom[], int lengthClassroom){
+	int sortOrder;
+	if(lengthClassroom<2){
+		system("cls");
+		printf("*Not Enough Classrooms To Sort*\n");
+	} else{
+		saveClassroomToFile(classroom, lengthClassroom,0);
+		do{
+			printf("\nSort By Ascending(0) or Descending(1) order: ");
+			scanf("%d", &sortOrder);
+		}while(sortOrder!=1 && sortOrder!=0);
+		system("cls");
+		if(sortOrder==0){
+			for(int i=1; i<lengthClassroom; i++){
+				Classroom key = classroom[i];
+				int j = i-1;
+				while(j>=0 && strcmp(key.name, classroom[j].name)<0){
+					classroom[j+1]=classroom[j];
+					j--;
+				}
+				classroom[j+1]=key;
+			}
+		} else{
+			for(int i=1; i<lengthClassroom; i++){
+				Classroom key = classroom[i];
+				int j = i-1;
+				while(j>=0 && strcmp(key.name, classroom[j].name)>0){
+					classroom[j+1]=classroom[j];
+					j--;
+				}
+				classroom[j+1]=key;
+			}
+		}
+	}
+    if(lengthClassroom>=2){
+    	printf("\n\t**SORTED STUDENTS**\n\n");
+		printf("|=======|===========================|==============|\n");
+		printf("|  ID   |           Name            |  teacherId   |\n");
+		printf("|=======|===========================|==============|\n");
+		for(int i=0; i<lengthClassroom; i++){
+			
+			printf("| %-5d | %-25s | %-12s |\n", 
+			classroom[i].classroomId,
+			classroom[i].name,
+			classroom[i].teacherId);
+			printf("|=======|===========================|==============|\n");
+		}
+	}
+	loadClassroomFromFile(classroom, &lengthClassroom,0);
+}
+
+void saveClassroomToFile(Classroom classroom[], int lengthClassroom, int a){
+	FILE *classroomPtr=fopen("classroomData.dat", "wb");
+	if(classroomPtr==NULL){
+		printf("\n\n*Can't Open File*\n");
+	}
+	fwrite(classroom,sizeof(Classroom),lengthClassroom,classroomPtr);
+	if(a==1){
+		printf("\n*Saved Successfully*\n");
+	}
+	fclose(classroomPtr);
+}
+
+void loadClassroomFromFile(Classroom classroom[], int *lengthClassroom, int a){
+	FILE *classroomPtr=fopen("classroomData.dat", "rb");
+	if(classroomPtr==NULL){
+		printf("Can't Open File");
+	}
+	*lengthClassroom=fread(classroom, sizeof(Classroom), 100, classroomPtr);
+	if(a==1){
+		printf("\n*Loaded Successfully*\n");
+	}
+	fclose(classroomPtr);
+}
+
+void searchClassroom(Classroom classroom[], int lengthClassroom){
+	int count=0;
+	int firstTime;
+	char name[30];
+	getchar();
+	do{
+		printf("\nEnter Classroom Name To Search: ");
+		fgets(name, sizeof(name), stdin);
+		name[strcspn(name,"\n")]='\0';
+		if(strlen(name)<=1){
+			printf("\n*Minimum 2 Characters Required, Try Again*\n");
+		}
+	}while(strlen(name)<=1);
+	system("cls");
+	printf("\n    SEARCH RESULT FOR \"%s\":\n\n", name);
+	firstTime=0;
+	for(int i=0; i<lengthClassroom; i++){
+		if((strstr(classroom[i].name, name))!= NULL){
+			if(firstTime==0){
+				printf("|=======|===========================|==============|\n");
+				printf("|  ID   |           Name            |  teacherId   |\n");
+				printf("|=======|===========================|==============|\n");
+				firstTime++;
+			}
+			printf("| %-5d | %-25s | %-12s | %-30s | %-16s |\n", 
+			classroom[i].classroomId,
+			classroom[i].name,
+			classroom[i].teacherId);
+			printf("|=======|===========================|==============|\n");
+			count++;
+		}
+	}
+	if(count==0){
+	printf("*No Result*\n");
+	}
+}
