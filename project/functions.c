@@ -22,14 +22,14 @@ void login(){
 	do{
 		printf("\t    LOGIN\n");
 		printf("\n================================\n");
-		printf("Email: ");
+		printf("Email(admin@gmail.com): ");
 		fgets(email, sizeof(email), stdin);
 		if(strcspn(email, "\n")==strlen(email)){
 			while ((getchar()) != '\n');
 		} else{
 			email[strcspn(email, "\n")] = '\0';
 		}
-		printf("Password: ");
+		printf("Password(password): ");
 		fgets(password, sizeof(password), stdin);
 		if(strcspn(password, "\n")==strlen(password)){
 			while ((getchar()) != '\n');
@@ -107,10 +107,10 @@ void inputStudent(Student student[], int *length){
 				check++;
 			}
 		}
-		if(student[*length].name[0]=='\0' || check!=0){
+		if(student[*length].name[0]=='\0' || check!=0 || student[*length].name[0]==' '){
 			printf("\n*Name Must Not Be Empty Or Contains Special Characters*\n\n");
 		}
-	}while(student[*length].name[0]=='\0' || check!=0);
+	}while(student[*length].name[0]=='\0' || check!=0 || student[*length].name[0]==' ');
 	
 	do{
 		check=0;
@@ -126,10 +126,10 @@ void inputStudent(Student student[], int *length){
 				check++;
 			}
 		}
-		if(student[*length].classroomId[0]=='\0' || check!=0){
+		if(student[*length].classroomId[0]=='\0' || check!=0 || student[*length].classroomId[0]==' '){
 			printf("\n*Classroom ID Must Not Be Empty Or Be A Negative Number*\n\n");
 		}
-	}while(student[*length].classroomId[0]=='\0' || check!=0);
+	}while(student[*length].classroomId[0]=='\0' || check!=0 || student[*length].classroomId[0]==' ');
 	
 	do{
 		count=0;
@@ -151,10 +151,10 @@ void inputStudent(Student student[], int *length){
 				check++;
 			}
 		}
-		if(count!=0 || student[*length].email[0]=='\0' || check!=0){
-			printf("\n*Email Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
+		if(count!=0 || student[*length].email[0]=='\0' || check!=0 || student[*length].email[0]==' ' || student[*length].email[0]=='.' || student[*length].email[0]=='@'){
+			printf("\n*Email Must Not Be Empty, Contain Special Characters(Except \".\",\"-\",\"_\"), Or Already Exist*\n\n");
 		}
-	}while(count!=0 || student[*length].email[0]=='\0' || check!=0);
+	}while(count!=0 || student[*length].email[0]=='\0' || check!=0 || student[*length].email[0]==' ' || student[*length].email[0]=='.' || student[*length].email[0]=='@');
 	
 	do{
 		count=0;
@@ -176,10 +176,13 @@ void inputStudent(Student student[], int *length){
 				check++;
 			}
 		}
-		if(count!=0 || student[*length].phoneNumber[0]=='\0' || check!=0){
-			printf("\n*Email Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
+		if(count!=0 || student[*length].phoneNumber[0]=='\0' || check!=0 || student[*length].phoneNumber[0]==' '){
+			printf("\n*PhoneNumber Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
 		}
-	}while(count!=0 || student[*length].phoneNumber[0]=='\0' || check!=0);
+		if(strlen(student[*length].phoneNumber)!=10){
+			printf("\n*PhoneNumber Must Have 10 Digits*\n\n");
+		}
+	}while(count!=0 || student[*length].phoneNumber[0]=='\0' || check!=0 || student[*length].phoneNumber[0]==' ' || strlen(student[*length].phoneNumber)!=10);
 
 	printf("\n*Student Added Successfully*\n"); 
 	(*length)++;
@@ -258,10 +261,10 @@ void editStudent(Student student[], int length){
 					check++;
 				}
 			}
-			if(student[found].name[0]=='\0' || check!=0){
+			if(student[found].name[0]=='\0' || check!=0 || student[found].name[0]==' '){
 				printf("\n*Name Must Not Be Empty Or Contains Special Characters*\n\n");
 			}
-		}while(student[found].name[0]=='\0' || check!=0);
+		}while(student[found].name[0]=='\0' || check!=0 || student[found].name[0]==' ');
 		
 		do{
 			check=0;
@@ -277,10 +280,10 @@ void editStudent(Student student[], int length){
 					check++;
 				}
 			}
-			if(student[found].classroomId[0]=='\0' || check!=0){
+			if(student[found].classroomId[0]=='\0' || check!=0 || student[found].classroomId[0]==' '){
 				printf("\n*Classroom ID Must Not Be Empty Or Be A Negative Number*\n\n");
 			}
-		}while(student[found].classroomId[0]=='\0' || check!=0);
+		}while(student[found].classroomId[0]=='\0' || check!=0 || student[found].classroomId[0]==' ');
 		
 		do{
 			count=0;
@@ -302,10 +305,10 @@ void editStudent(Student student[], int length){
 					check++;
 				}
 			}
-			if(count!=0 || student[found].email[0]=='\0' || check!=0){
-				printf("\n*Email Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
+			if(count!=0 || student[found].email[0]=='\0' || check!=0 || student[found].email[0]=='@' || student[found].email[0]=='.' || student[found].email[0]=='_'){
+				printf("\n*Email Must Not Be Empty, Contain Special Characters(Except \".\",\"-\",\"_\"), Or Already Exist*\n\n");
 			}
-		}while(count!=0 || student[found].email[0]=='\0' || check!=0);
+		}while(count!=0 || student[found].email[0]=='\0' || check!=0 || student[found].email[0]=='@' || student[found].email[0]=='.' || student[found].email[0]=='_');
 		
 		do{
 			count=0;
@@ -327,10 +330,13 @@ void editStudent(Student student[], int length){
 					check++;
 				}
 			}
-			if(count!=0 || student[found].phoneNumber[0]=='\0' || check!=0){
-				printf("\n*Email Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
+			if(count!=0 || student[found].phoneNumber[0]=='\0' || check!=0 || student[found].phoneNumber[0]==' '){
+				printf("\n*PhoneNumber Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
 			}
-		}while(count!=0 || student[found].phoneNumber[0]=='\0' || check!=0);
+			if(strlen(student[found].phoneNumber)!=10){
+				printf("\n*PhoneNumber Must Have 10 Digits*\n\n");
+			}
+		}while(count!=0 || student[found].phoneNumber[0]=='\0' || check!=0 || student[found].phoneNumber[0]==' ' || strlen(student[found].phoneNumber)!=10);
 		printf("\n*Student's Information Changed Successfully*\n"); 
 		saveStudentToFile(student, length, 1);
 	}
@@ -388,7 +394,6 @@ void deleteStudent(Student student[], int *length){
 		} else{
 			for(int i=found; i<*length; i++){
 				student[i]=student[i+1];
-				
 			}
 			(*length)--;
 			printf("\n*Delete Successful*\n");
@@ -565,10 +570,10 @@ void inputTeacher(Teacher teacher[], int *lengthTeacher){
 				check++;
 			}
 		}
-		if(teacher[*lengthTeacher].name[0]=='\0' || check!=0){
+		if(teacher[*lengthTeacher].name[0]=='\0' || check!=0 || teacher[*lengthTeacher].name[0]==' '){
 			printf("\n*Name Must Not Be Empty Or Contains Special Characters*\n\n");
 		}
-	}while(teacher[*lengthTeacher].name[0]=='\0' || check!=0);
+	}while(teacher[*lengthTeacher].name[0]=='\0' || check!=0 || teacher[*lengthTeacher].name[0]==' ');
 	
 	do{
 		check=0;
@@ -584,10 +589,10 @@ void inputTeacher(Teacher teacher[], int *lengthTeacher){
 				check++;
 			}
 		}
-		if(teacher[*lengthTeacher].classroomId[0]=='\0' || check!=0){
+		if(teacher[*lengthTeacher].classroomId[0]=='\0' || check!=0 || teacher[*lengthTeacher].classroomId[0]==' '){
 			printf("\n*Classroom ID Must Not Be Empty Or Be A Negative Number*\n\n");
 		}
-	}while(teacher[*lengthTeacher].classroomId[0]=='\0' || check!=0);
+	}while(teacher[*lengthTeacher].classroomId[0]=='\0' || check!=0 || teacher[*lengthTeacher].classroomId[0]==' ');
 	
 	do{
 		count=0;
@@ -609,10 +614,10 @@ void inputTeacher(Teacher teacher[], int *lengthTeacher){
 				check++;
 			}
 		}
-		if(count!=0 || teacher[*lengthTeacher].email[0]=='\0' || check!=0){
+		if(count!=0 || teacher[*lengthTeacher].email[0]=='\0' || check!=0 || teacher[*lengthTeacher].email[0]==' ' || teacher[*lengthTeacher].email[0]=='.' || teacher[*lengthTeacher].email[0]=='@'){
 			printf("\n*Email Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
 		}
-	}while(count!=0 || teacher[*lengthTeacher].email[0]=='\0' || check!=0);
+	}while(count!=0 || teacher[*lengthTeacher].email[0]=='\0' || check!=0 || teacher[*lengthTeacher].email[0]==' ' || teacher[*lengthTeacher].email[0]=='.' || teacher[*lengthTeacher].email[0]=='@');
 	
 	do{
 		count=0;
@@ -634,10 +639,13 @@ void inputTeacher(Teacher teacher[], int *lengthTeacher){
 				check++;
 			}
 		}
-		if(count!=0 || teacher[*lengthTeacher].phoneNumber[0]=='\0' || check!=0){
-			printf("\n*Email Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
+		if(count!=0 || teacher[*lengthTeacher].phoneNumber[0]=='\0' || check!=0 || teacher[*lengthTeacher].phoneNumber[0]==' '){
+			printf("\n*PhoneNumber Must Not Be Empty, Contain Special Characters, Or Already Exist*\n\n");
 		}
-	}while(count!=0 || teacher[*lengthTeacher].phoneNumber[0]=='\0' || check!=0);
+		if(strlen(teacher[*lengthTeacher].phoneNumber)!=10){
+			printf("\n*PhoneNumber Must Have 10 Digits*\n\n");
+		}
+	}while(count!=0 || teacher[*lengthTeacher].phoneNumber[0]=='\0' || check!=0 || teacher[*lengthTeacher].phoneNumber[0]==' ' || strlen(teacher[*lengthTeacher].phoneNumber)!=10);
 
 	printf("\n*Teacher Added Successfully*\n"); 
 	(*lengthTeacher)++;
@@ -954,10 +962,10 @@ void inputClassroom(Classroom classroom[], int *lengthClassroom){
 				check++;
 			}
 		}
-		if(classroom[*lengthClassroom].name[0]=='\0' || check!=0){
+		if(classroom[*lengthClassroom].name[0]=='\0' || check!=0 || classroom[*lengthClassroom].name[0]==' '){
 			printf("\n*Name Must Not Be Empty Or Contains Special Characters*\n\n");
 		}
-	}while(classroom[*lengthClassroom].name[0]=='\0' || check!=0);
+	}while(classroom[*lengthClassroom].name[0]=='\0' || check!=0 || classroom[*lengthClassroom].name[0]==' ');
 	
 	do{
 		check=0;
@@ -973,10 +981,10 @@ void inputClassroom(Classroom classroom[], int *lengthClassroom){
 				check++;
 			}
 		}
-		if(classroom[*lengthClassroom].teacherId[0]=='\0' || check!=0){
+		if(classroom[*lengthClassroom].teacherId[0]=='\0' || check!=0 || classroom[*lengthClassroom].teacherId[0]==' '){
 			printf("\n*Teacher ID Must Not Be Empty Or Be A Negative Number*\n\n");
 		}
-	}while(classroom[*lengthClassroom].teacherId[0]=='\0' || check!=0);
+	}while(classroom[*lengthClassroom].teacherId[0]=='\0' || check!=0 || classroom[*lengthClassroom].teacherId[0]==' ');
 
 	printf("\n*Classroom Added Successfully*\n"); 
 	(*lengthClassroom)++;
@@ -1051,10 +1059,10 @@ void editClassroom(Classroom classroom[], int lengthClassroom){
 					check++;
 				}
 			}
-			if(classroom[found].name[0]=='\0' || check!=0){
+			if(classroom[found].name[0]=='\0' || check!=0 || classroom[found].name[0]==' '){
 				printf("\n*Name Must Not Be Empty Or Contains Special Characters*\n\n");
 			}
-		}while(classroom[found].name[0]=='\0' || check!=0);
+		}while(classroom[found].name[0]=='\0' || check!=0 || classroom[found].name[0]==' ');
 		
 		do{
 			check=0;
@@ -1066,10 +1074,10 @@ void editClassroom(Classroom classroom[], int lengthClassroom){
 					check++;
 				}
 			}
-			if(classroom[found].teacherId[0]=='\0' || check!=0){
+			if(classroom[found].teacherId[0]=='\0' || check!=0 || classroom[found].teacherId[0]==' '){
 				printf("\n*Teacher ID Must Not Be Empty Or Be A Negative Number*\n\n");
 			}
-		}while(classroom[found].teacherId[0]=='\0' || check!=0);
+		}while(classroom[found].teacherId[0]=='\0' || check!=0 || classroom[found].teacherId[0]==' ');
 		printf("\n*Classroom's Information Changed Successfully*\n"); 
 		saveClassroomToFile(classroom, lengthClassroom, 1);
 	}
